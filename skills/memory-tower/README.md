@@ -51,7 +51,7 @@ python3 scripts/init_psrd.py --dir <项目目录>
 export PSRD_MEM=<项目目录>/.psrd
 
 # ② 记住一条规则（改 R 层，走治理四步）
-python3 scripts/memgov.py gate RULES.md        # 快照
+python3 scripts/memgov.py gate RULES.md        # 闸门 + 留 .prev
 # …编辑 RULES.md，追加 §N 判据…
 python3 scripts/memgov.py ledger -m "加规则：xxx" -l R   # 记账
 python3 scripts/memgov.py seal                 # 封哈希
@@ -82,7 +82,8 @@ gate → 改 → ledger → seal → verify
 
 | 步 | 命令 | 作用 |
 |---|---|---|
-| 快照 | `memgov.py gate <文件>` | 记改前 sha |
+| 闸门 + 备份 | `memgov.py gate <文件>` | 质检通过后留 `<文件>.prev`，可回滚 |
+| 回滚 | `memgov.py restore <文件>.prev <文件> --yes` | 退回改前版本（旧版自动存 `.before_restore`）|
 | 改 | 正常编辑 | 就地改 |
 | 记账 | `memgov.py ledger -m "动作" -l R` | 写 LEDGER.jsonl |
 | 封哈希 | `memgov.py seal` | 锁定状态 |

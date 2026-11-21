@@ -13,7 +13,7 @@ memgov.py — 记忆治理器（账本 + 完整性 + 闸门 + 恢复 + 时效）
 子命令
   seal                         对内存层封哈希 → 写 INTEGRITY.json
   verify                       校验：完整性（哈希漂移）+ 一致性（跨层/红线/marker）+ 账实相符
-  gate <文件> [--strict]        提交前闸门：体积/编码/栅栏/marker/重复行/控制符
+  gate <文件> [--strict]        提交前闸门：体积/编码/栅栏/marker/重复行/控制符；放行时留 <文件>.prev 供回滚
   ledger -m "动作" -l R [--reason "…"] [--file X]   追加一条账（自动补前后 sha8）
   ledger --show [N]            看最近 N 条账
   ledger --grep 关键词          查账本
@@ -303,6 +303,13 @@ def cmd_gate(a):
         print(f"  {C_OK}✅ 通过{C_END}")
     if issues:
         print(f"\n{C_ERR}✗ 拦截（{len(issues)} 严重）{C_END}"); return 1
+    # 放行前留一份改前版本，供 memgov restore 直接回滚（2026-11-21 补）
+    prev = p.with_name(p.name + ".prev")
+    try:
+        shutil.copy2(p, prev)
+        print(f"  {C_DIM}改前版本已备份 → {prev.name}（回滚：memgov.py restore {prev.name} {p.name} --yes）{C_END}")
+    except Exception as e:
+        print(f"  {C_WARN}⚠️ 改前备份失败：{e}（本次仍放行，但回滚需自留 bak）{C_END}")
     print(f"\n{C_OK}✓ 放行（{len(warns)} 提示）{C_END}" if warns else f"\n{C_OK}✓ 放行{C_END}")
     return 0
 
@@ -356,6 +363,11 @@ def cmd_ledger(a):
 
 def cmd_restore(a):
     src, dst = Path(a.backup), Path(a.target)
+    # 只给文件名时自动补全 MEM 前缀（与 gate 一致，2026-11-21 补）
+    if not src.exists() and not src.is_absolute():
+        src = MEM / src
+    if not dst.is_absolute() and (MEM / dst).exists():
+        dst = MEM / dst
     if not src.exists():
         print(f"{C_ERR}备份不存在：{src}{C_END}"); return 2
     if not dst.exists():

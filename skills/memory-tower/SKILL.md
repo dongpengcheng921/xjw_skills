@@ -1,7 +1,7 @@
 ---
 name: memory-tower
 description: 分层长期记忆体系（PSRD = Index/Present/Rules/Secondary + Daily 日志）。当你需要「记住用户的要求与偏好」「回忆之前的约定与规则」「检查记忆健康度」「让 AI 越用越懂你」时使用。核心思想：只有 I+P 两层常驻注入（合计 ≤18K：I≤8K + P≤10K 硬帽），R/S/D 按需读取——体系可持续增长而内存占用不变。用 memgov.py 治理（改前快照 gate + 账本 + 封哈希 + 验封 verify + 优先级裁决），mem_lint.py 体检。
-version: 1.0.3
+version: 1.0.4
 agent_created: true
 ---
 
@@ -47,7 +47,7 @@ export PSRD_MEM=<项目>/.psrd    # 或让工具自动探测当前目录 .psrd/
 ## 改内存层文件必经四步（治理）
 
 ```bash
-python3 memgov.py gate <文件>                    # 1. 快照（记 prev sha）
+python3 memgov.py gate <文件>                    # 1. 闸门：质检 + 自动留存 <文件>.prev（回滚用）
 # …改文件…
 python3 memgov.py ledger -m "动作说明" -l R       # 2. 记账（谁/改了什么/为何）
 python3 memgov.py seal                            # 3. 封哈希
@@ -55,6 +55,8 @@ python3 memgov.py verify                           # 4. 验封（防无账改动
 ```
 
 **铁律：改 INDEX/P/R/S 没有账 = 可疑改动**（`mem_lint.py` 会报）。
+
+**改坏了怎么退**：`gate` 会把你放行前的版本存成 `<文件>.prev`，直接 `python3 memgov.py restore <文件>.prev <文件> --yes` 就能回到改前状态（恢复后记得补一条 `ledger` 再 `seal`）。
 
 ## 工具速查
 
