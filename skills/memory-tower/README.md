@@ -167,15 +167,15 @@ memory-tower/
 
 ---
 
-## 11. 版本号（单一真源）
+## 11. 版本号
 
-版本号只写在 **`VERSION`** 文件里（如 `1.0.3`）。任何对外声明、包名、元数据都必须与它一致——不接受「手抄一份」。
+版本号以 **`SKILL.md` frontmatter 的 `version`** 为准，与 `_skillhub_meta.json` 的 `version` 两处同步。改版本时手改这两处——不接受「手抄一份」。
 
 ```bash
-cat VERSION          # 读版本号
+grep '^version:' SKILL.md    # 读版本号
 ```
 
-维护者改动后按顺序做：① 改 `VERSION` ② 打包 ③ 用发布检查脚本核对包与文档 ④ 四处安装位置同步。版本不一致时检查脚本**报错退出**，不允许"先传再说"。
+维护者改动后按顺序做：① 改 `SKILL.md` 的 `version`（和 `_skillhub_meta.json`）② 打包 ③ 四处安装位置同步 ④ 跑一次 `pub_scan.py <解包目录>` 确认包内无内部信息。
 
 ---
 

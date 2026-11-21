@@ -1,6 +1,7 @@
 ---
 name: memory-tower
 description: 分层长期记忆体系（PSRD = Index/Present/Rules/Secondary + Daily 日志）。当你需要「记住用户的要求与偏好」「回忆之前的约定与规则」「检查记忆健康度」「让 AI 越用越懂你」时使用。核心思想：只有 I+P 两层常驻注入（合计 ≤18K：I≤8K + P≤10K 硬帽），R/S/D 按需读取——体系可持续增长而内存占用不变。用 memgov.py 治理（改前快照 gate + 账本 + 封哈希 + 验封 verify + 优先级裁决），mem_lint.py 体检。
+version: 1.0.3
 agent_created: true
 ---
 
