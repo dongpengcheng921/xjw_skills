@@ -47,7 +47,7 @@ gate → 改 → ledger → seal → verify
 
 | 变量 | 默认 | 说明 |
 |---|---|---|
-| `PSRD_MEM` | 金晓九默认目录 | 记忆目录（`.psrd/`）|
+| `PSRD_MEM` | 当前目录下 `.psrd/` | 记忆目录 |
 | `PSRD_ACTOR` | `agent` | 记账署名 |
 | `PSRD_EXTERNAL` | `{}` | 外部真源路径（JSON 字符串）|
-| `PSRD_WS` / `PSRD_CLAW` | 金晓九默认 | mem_lint 旧环境残留检查 |
+| `PSRD_WS` / `PSRD_CLAW` | 空（不检查） | mem_lint 旧环境残留检查 |

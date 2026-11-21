@@ -22,7 +22,7 @@ memgov.py — 记忆治理器（账本 + 完整性 + 闸门 + 恢复 + 时效）
   stat                         各层体积 + 红线（同 memfind --stat 摘要）
 
 路径
-  MEM = /Users/ios/OP/workspace/.workbuddy/memory
+  MEM = $PSRD_MEM，未设则当前目录下的 .psrd/（如 /path/to/project/.psrd）
 """
 import sys, os, re, json, hashlib, argparse, datetime, shutil
 from pathlib import Path

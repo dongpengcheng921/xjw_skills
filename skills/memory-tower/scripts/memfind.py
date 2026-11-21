@@ -31,6 +31,16 @@ from pathlib import Path
 MEM = Path(os.environ.get("PSRD_MEM") or (Path.cwd() / ".psrd"))
 WS = Path(os.environ["PSRD_WS"]) if os.environ.get("PSRD_WS") else None
 USAGE = MEM / "USAGE.jsonl"      # 读取埋点：每次检索落一条，供 memgov usage 分析
+def _reports(ws):
+    """报告语料：<WS>/reports 与 <WS>/Claw/reports 两处都认（后者是历史布局，留着兼容）。"""
+    out = set()
+    for sub in ("reports", "Claw/reports"):
+        d = ws / sub
+        if d.is_dir():
+            out.update(d.glob("**/*.md"))
+    return sorted(out)
+
+
 LAYERS = {
     "INDEX": [MEM / "INDEX.md"],
     "P":     [MEM / "MEMORY.md"],
@@ -41,7 +51,7 @@ LAYERS = {
     # 推广语料（"硬盘"扩展区）——索引页常驻引用，本体按需读
     "DOC":   sorted((WS / "picker/docs").glob("*.md")) if WS else [],
     "SKILL": sorted(WS.glob("skills/*/SKILL.md")) if WS else [],
-    "REPORT": sorted((WS / "Claw/reports").glob("**/*.md")) if WS else [],
+    "REPORT": _reports(WS) if WS else [],
 }
 # 索引页（这些是"内存"，可整体打印）
 INDEXES = {
