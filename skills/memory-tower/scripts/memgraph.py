@@ -39,8 +39,18 @@ PATH_FIELDS = ("真源", "产物")
 
 def load():
     if not DATA.exists():
-        print(f"{C_ERR}找不到 {DATA}{C_END}"); sys.exit(2)
-    return json.loads(DATA.read_text(encoding="utf-8"))
+        print(f"{C_ERR}找不到 {DATA}（先跑 init_psrd.py，或手工建一个空 DOMAINS.json）{C_END}", file=sys.stderr)
+        sys.exit(2)
+    try:
+        d = json.loads(DATA.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"{C_ERR}DOMAINS.json 解析失败：{e}{C_END}", file=sys.stderr)
+        sys.exit(2)
+    if not isinstance(d, dict):
+        d = {}
+    d.setdefault("meta", {"版本": "空图"})
+    d.setdefault("nodes", {})
+    return d
 
 
 def norm(p):
@@ -72,8 +82,14 @@ def exists(p):
 
 
 def list_nodes(d):
-    print(f"{C_KEY}═══ 领域关联图 · {len(d['nodes'])} 个节点（{d['meta']['版本']}）═══{C_END}")
-    for k, v in d["nodes"].items():
+    nodes = d.get("nodes") or {}
+    if not nodes:
+        print(f"{C_KEY}═══ 领域关联图 ═══{C_END}")
+        print(f"{C_WARN}0 个节点（尚未配置领域图，编辑 DOMAINS.json 的 nodes 添加节点）{C_END}")
+        print(C_DIM + '节点格式：{"名称":"…","真源":["…"],"关联":["…"]}' + C_END)
+        return
+    print(f"{C_KEY}═══ 领域关联图 · {len(nodes)} 个节点（{d.get('meta',{}).get('版本','?')}）═══{C_END}")
+    for k, v in nodes.items():
         t = v.get("类型", "")
         st = v.get("状态", v.get("版本", ""))
         print(f"  {C_NODE}{k:<14}{C_END} {v.get('名称',''):<34} {C_DIM}[{t}]{C_END} {st}")

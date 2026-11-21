@@ -1,12 +1,12 @@
 ---
 name: memory-tower
-description: 分层长期记忆体系（PSRD = Index/Present/Rules/Secondary + Daily 日志）。当你需要「记住用户的要求与偏好」「回忆之前的约定与规则」「检查记忆健康度」「让 AI 越用越懂你」时使用。核心思想：只有 I+P 两层常驻注入（合计 ≤18K：I≤8K + P≤10K 硬帽），R/S/D 按需读取——体系可无限增长而内存占用不变。用 memgov.py 治理（改前快照 gate + 账本 + 封哈希 + 验封 verify + 优先级裁决），mem_lint.py 体检。
+description: 分层长期记忆体系（PSRD = Index/Present/Rules/Secondary + Daily 日志）。当你需要「记住用户的要求与偏好」「回忆之前的约定与规则」「检查记忆健康度」「让 AI 越用越懂你」时使用。核心思想：只有 I+P 两层常驻注入（合计 ≤18K：I≤8K + P≤10K 硬帽），R/S/D 按需读取——体系可持续增长而内存占用不变。用 memgov.py 治理（改前快照 gate + 账本 + 封哈希 + 验封 verify + 优先级裁决），mem_lint.py 体检。
 agent_created: true
 ---
 
 # Memory Tower · 分层记忆塔
 
-> 一句话：**注入的只有 I+P 两层（≤18K），其余 R/S/D 全部按需读（Grep → Read 命中行）**。体系无限增长，内存占用不变。
+> 一句话：**注入的只有 I+P 两层（≤18K），其余 R/S/D 全部按需读（Grep → Read 命中行）**。体系持续增长，内存占用不变。
 
 ## 这是什么
 
@@ -88,4 +88,4 @@ python3 memgov.py verify                           # 4. 验封（防无账改动
 套到具体平台时只改「工具怎么被调用」这一层：
 - WorkBuddy/Claude Code：直接 `python3 scripts/memgov.py …`
 - DSH bundle：把 `scripts/` 打成 tool，SKILL.md 挂到插件
-- 其它：init_psrd.py 生成 `.psrd/` 后，任何能跑 Python 的 agent 都能用 memgov/mem_lint
+- 其它：init_psrd.py 生成 `.psrd/` 后，已验证 DSH / WorkBuddy；其它环境需自测

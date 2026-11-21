@@ -100,6 +100,11 @@ DO NOT INJECT
 > 只放技术细节 / 数据源 / 脚本清单 / 历史蒸馏。先看本文件目录，再 Read 命中章节。
 > 归档：原样搬到 `_archive/`，本体留指针 + 目录行。
 """,
+    "DOMAINS.json": json.dumps({
+        "meta": {"版本": "1.0",
+                 "说明": "领域关联图：节点(领域/资产) + 边(关联域)。用 memgraph.py 遍历、--check 校验断链、--orphans 找孤立节点。"},
+        "nodes": {},
+    }, ensure_ascii=False, indent=2) + "\n",
 }
 
 

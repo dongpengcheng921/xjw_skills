@@ -1,8 +1,8 @@
 # Memory Tower · 分层记忆塔
 
-> 让 AI 越用越懂你，而内存占用永远不变。
+> 让 AI 越用越懂你，而内存占用保持不变。
 
-一个**分层长期记忆体系** skill：把 AI 的记忆拆成一座五层塔，只有塔尖常驻注入（≤18K 字符），塔身按需读取——**知识无限积累，注入体积恒定**。配套治理工具（封哈希 + 账本 + 体检），让记忆「可审计、可回滚、不腐坏」。
+一个**分层长期记忆体系** skill：把 AI 的记忆拆成一座五层塔，只有塔尖常驻注入（≤18K 字符），塔身按需读取——**知识持续积累，注入体积恒定**。配套治理工具（封哈希 + 账本 + 体检），让记忆「可审计、可回滚、不腐坏」。
 
 ---
 
@@ -136,11 +136,13 @@ gate → 改 → ledger → seal → verify
 
 ## 9. 平台安装
 
-**DeepSeek Harness**：复制整个目录到 `~/.dsh/skills/memory-tower/`，DSH 自动发现（无需重启）。
+**DeepSeek Harness**：按 DSH 官方文档的 skill 目录放置（常见为 `<home>/.dsh/skills/<name>/`，本方案未实测该路径），DSH 自动发现。
 
-**WorkBuddy / Claude Code**：复制到 `<home>/.workbuddy/skills/memory-tower/`（含 `_skillhub_meta.json`）。
+**WorkBuddy**：复制到 `<home>/.workbuddy/skills/memory-tower/`（含 `_skillhub_meta.json`）。
 
-**其它平台**：任何能跑 Python 的 agent —— 运行 `init_psrd.py` 建 `.psrd/`，用 `memgov.py` / `mem_lint.py` 治理即可。
+**Claude Code**：复制到 `<home>/.claude/skills/memory-tower/`。
+
+**其它平台**：已验证 DSH / WorkBuddy 两个平台；其它环境需自测 —— 运行 `init_psrd.py` 建 `.psrd/`，用 `memgov.py` / `mem_lint.py` 治理。
 
 ---
 
@@ -153,15 +155,16 @@ memory-tower/
 ├── references/
 │   ├── governance.md         # 治理细则：阈值 + 优先级 + 归档
 │   └── three-tier-model.md   # 为什么分层（O(1) 内存 / O(n) 知识）
-└── scripts/                  # 6 个工具（全参数化，无硬编码依赖）
+└── scripts/                  # 7 个工具（全参数化，无硬编码依赖）
     ├── init_psrd.py
     ├── memgov.py
     ├── mem_lint.py
     ├── memfind.py
     ├── memgraph.py
-    └── mkindex.py
+    ├── mkindex.py
+    └── pub_scan.py
 ```
 
 ---
 
-**一句话总结**：塔尖常驻（I+P ≤18K），塔身按需（R/S/D），动塔有账（gate→ledger→seal）。知识无限长，注入永远只有塔尖。
+**一句话总结**：塔尖常驻（I+P ≤18K），塔身按需（R/S/D），动塔有账（gate→ledger→seal）。知识持续增长，注入始终只有塔尖。
