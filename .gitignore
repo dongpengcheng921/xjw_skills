@@ -221,3 +221,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# 本地约定（memory-tower 发布）
+*.bak_*
+*.zip
+.DS_Store
