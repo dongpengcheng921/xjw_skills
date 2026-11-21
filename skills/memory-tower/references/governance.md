@@ -68,9 +68,15 @@ gate → 改 → ledger → seal → verify
 **扫描方式（唯一入口，别手打正则）**
 
 ```bash
-python3 scripts/pub_scan.py <解包目录>          # 退出码 0=干净 / 1=命中 / 3=目录不存在
-python3 scripts/pub_scan.py <解包目录> --list   # 只列位置，不打印原文（贴日志用）
+# 六类固定模式（路径 / 平台 ID / 凭证 / 凭证文件 + 内部标识占位）
+python3 scripts/pub_scan.py <解包目录>              # 0=干净 / 1=命中 / 3=目录不存在
+python3 scripts/pub_scan.py <解包目录> --list       # 只列位置，不打印原文（贴日志用）
+
+# 内部标识（人名 / 内部目录名 / 业务代号）**不进源码**，发布前临时传：
+python3 scripts/pub_scan.py <解包目录> --words "甲|乙|丙"
+PSRD_SCAN_WORDS="甲|乙|丙" python3 scripts/pub_scan.py <解包目录>
 ```
+词表一旦写进源码，它本身就是泄露；所以 `INTERNAL_WORDS` 保持空，发布前临时传、扫完不留痕。
 
 模式写在 `scripts/pub_scan.py` 里，**用字符串拼接构造**：本文件也在包内，若把正则以完整字面量写进来，扫描器会扫到自己那几行，变成永远红的假闸门。同理，本表只描述不写样态。
 
