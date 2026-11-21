@@ -64,6 +64,7 @@ python3 memgov.py verify                           # 4. 验封（防无账改动
 | `memfind.py` | 检索 | 跨层按关键词查 |
 | `memgraph.py` | 领域关联 | 领域 → 相关条目 |
 | `mkindex.py` | 建索引 | 重建 INDEX 目录行 |
+| `pub_scan.py` | 对外分发前扫描 | 路径/人名/平台ID/凭证/内部目录名/数据标识，命中即阻断 |
 | `init_psrd.py` | 初始化 | `--dir` `--force` |
 
 ## 配置（环境变量）
